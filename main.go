@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +15,19 @@ func setup() error {
 		c.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
 
-	err = r.Run(":3000")
+	r.GET("/on_done", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "done"})
+	})
+
+	r.GET("/on_deauth", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "deauth"})
+	})
+
+	r.GET("/on_delete", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "delete"})
+	})
+
+	err := r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 	if err != nil {
 		return err
 	}
